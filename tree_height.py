@@ -26,7 +26,7 @@ def compute_height(n, parents):
 
 def input_from_keyboard():
     n = input().strip()
-    if n != None:
+    if n is not None:
         parents = input().strip().split(" ")
         if parents:
             return n, parents
@@ -52,7 +52,7 @@ def main():
     input_method = input().strip()
     if input_method == "F":
         file_dir = input().strip()
-        if str(file_dir[-1]) not in "a":
+        if str(file_dir[-1]) != "a":
             n, parents = input_from_file(file_dir)
             if n is not None and parents is not None:
                 height = compute_height(n, parents)
