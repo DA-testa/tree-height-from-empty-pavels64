@@ -8,7 +8,7 @@ def compute_height(n, parents):
     heights = np.zeros(int(n))
     max_height = 0
     for i in range(int(n)):
-        if heights[i] >= 0:
+        if heights[i] > 0:
             continue
         height = 0
         j = i
