@@ -2,50 +2,68 @@
 
 import sys
 import threading
-import numpy
-
-class Node:
-    def __init__(self, index):
-        self.index = index
-        self.children = []
-        
-    def add_child(self, child):
-        self.children.append(child)
+import numpy as np
 
 def compute_height(n, parents):
-    nodes = [Node(i) for i in range(n)]
-    root = None
-    
-    for i, parent_index in enumerate(parents):
-        if parent_index == -1:
-            root = nodes[i]
-        else:
-            parent_node = nodes[parent_index]
-            parent_node.add_child(nodes[i])
-    
-    max_depth = 0
-    
-    def dfs(node, depth):
-        nonlocal max_depth
-        max_depth = max(max_depth, depth)
-        for child in node.children:
-            dfs(child, depth+1)
-    
-    dfs(root, 1)
-    
-    return max_depth
+    heights = np.zeros(int(n))
+    max_height = 0
+    for i in range(int(n)):
+        if heights[i] > 0:
+            continue
+        height = 0
+        j = i
+        while j != -1:
+            if heights[j] > 0:
+                height += heights[j]
+                break
+            else:
+                height += 1
+                j = int(parents[j])
+        heights[i] = height
+        if height > max_height:
+            max_height = height
+    return max_height
+
+def input_from_keyboard():
+    n = input().strip()
+    if n:
+        parents = input().strip().split(" ")
+        if parents:
+            return n, parents
+    return None, None
+
+def input_from_file(file_dir):
+    try:
+        with open(f"./test/{file_dir}") as f:
+            contents = f.readlines()
+    except:
+        print("ERROR")
+        return None, None
+
+    n = contents[0].strip()
+    if n:
+        parents = contents[1].strip().split(" ")
+        if parents:
+            f.close()
+            return n, parents
+    return None, None
 
 def main():
-    try:
-        n = int(input())
-        parents = list(map(int, input().split()))
-        print(compute_height(n, parents))
-    except Exception as e:
-        print("Error: {}".format(str(e)))
-        sys.exit(1)
+    input_method = input().strip()
+    if input_method == "F":
+        file_dir = input().strip()
+        if str(file_dir[-1]) != "a":
+            n, parents = input_from_file(file_dir)
+            if n and parents:
+                height = compute_height(n, parents)
+                print(int(height))
+    elif input_method == "I":
+        n, parents = input_from_keyboard()
+        if n and parents:
+            height = compute_height(n, parents)
+            print(int(height))
 
-if __name__ == '__main__':
-    sys.setrecursionlimit(10**7)
-    threading.stack_size(2**27)
-    threading.Thread(target=main).start()
+sys.setrecursionlimit(10 ** 7)
+threading.stack_size(2 ** 27)
+threading.Thread(target=main).start()
 
