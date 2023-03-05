@@ -26,26 +26,24 @@ def compute_height(n, parents):
 
 def input_from_keyboard():
     n = input().strip()
-    if n:
+    if n is not None:
         parents = input().strip().split(" ")
         if parents:
-            parents = [int(p) for p in parents]
             return n, parents
     return None, None
 
 def input_from_file(file_dir):
     try:
-        with open(file_dir) as f:
+        with open(f"./test/{file_dir}") as f:
             contents = f.readlines()
-    except:
-        print("ERROR")
+    except FileNotFoundError:
+        print("ERROR: File not found.")
         return None, None
 
     n = contents[0].strip()
-    if n:
+    if n is not None:
         parents = contents[1].strip().split(" ")
         if parents:
-            parents = [int(p) for p in parents]
             f.close()
             return n, parents
     return None, None
@@ -56,17 +54,17 @@ def main():
         file_dir = input().strip()
         if str(file_dir[-1]) != "a":
             n, parents = input_from_file(file_dir)
-            if n and parents:
+            if n is not None and parents is not None:
                 height = compute_height(n, parents)
                 print(int(height))
     elif input_method == "I":
         n, parents = input_from_keyboard()
-        if n and parents:
+        if n is not None and parents is not None:
             height = compute_height(n, parents)
             print(int(height))
 
-if __name__ == '__main__':
-    sys.setrecursionlimit(10 ** 7)
-    threading.stack_size(2 ** 27)
-    threading.Thread(target=main).start()
+sys.setrecursionlimit(10 ** 7)
+threading.stack_size(2 ** 27)
+threading.Thread(target=main).start()
+
 
