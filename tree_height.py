@@ -29,12 +29,13 @@ def input_from_keyboard():
     if n:
         parents = input().strip().split(" ")
         if parents:
+            parents = [int(p) for p in parents]
             return n, parents
     return None, None
 
 def input_from_file(file_dir):
     try:
-        with open(f"./test/{file_dir}") as f:
+        with open(file_dir) as f:
             contents = f.readlines()
     except:
         print("ERROR")
@@ -44,6 +45,7 @@ def input_from_file(file_dir):
     if n:
         parents = contents[1].strip().split(" ")
         if parents:
+            parents = [int(p) for p in parents]
             f.close()
             return n, parents
     return None, None
@@ -63,7 +65,8 @@ def main():
             height = compute_height(n, parents)
             print(int(height))
 
-sys.setrecursionlimit(10 ** 7)
-threading.stack_size(2 ** 27)
-threading.Thread(target=main).start()
+if __name__ == '__main__':
+    sys.setrecursionlimit(10 ** 7)
+    threading.stack_size(2 ** 27)
+    threading.Thread(target=main).start()
 
