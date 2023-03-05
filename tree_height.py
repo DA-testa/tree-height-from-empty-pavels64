@@ -36,11 +36,16 @@ def compute_height(n, parents):
     return max_depth
 
 def main():
-    n = int(input())
-    parents = list(map(int, input().split()))
-    
-    print(compute_height(n, parents))
+    try:
+        n = int(input())
+        parents = list(map(int, input().split()))
+        print(compute_height(n, parents))
+    except Exception as e:
+        print("Error: {}".format(str(e)))
+        sys.exit(1)
 
-sys.setrecursionlimit(10**7)
-threading.stack_size(2**27)
-threading.Thread(target=main).start()
+if __name__ == '__main__':
+    sys.setrecursionlimit(10**7)
+    threading.stack_size(2**27)
+    threading.Thread(target=main).start()
+
